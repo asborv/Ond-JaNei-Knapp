@@ -39,10 +39,12 @@ function flyttElementTilfeldig(e, element) {
 function vurderAvstand(e, element = jaKnapp, maalDiff = 150) {
 
     // Finn posisjonen til musepeikaren
+    // link https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
     const musX = e.clientX;
     const musY = e.clientY;
 
     // Finn nærmaste hjørne til musepeikaren
+    // link https://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element-relative-to-the-browser-window
     const elementPos = element.getBoundingClientRect();
 
     const elementXRef = elementPos.x - musX < -elementPos.width / 2
