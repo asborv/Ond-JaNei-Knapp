@@ -10,6 +10,7 @@ const neiKnapp = document.getElementById("neiKnapp");
 function flyttElementTilfeldig(e, element) {
 
     // Set høgaste moglege x- og y-verdiar for element
+    // link https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
     const xMax = window.innerWidth - element.getBoundingClientRect().width;
     const yMax = window.innerHeight - element.getBoundingClientRect().height;
 
@@ -29,6 +30,8 @@ function flyttElementTilfeldig(e, element) {
     document.body.appendChild(jaKnapp);
 
     // Dersom gamalt element ikkje er i main-elementet, slett det.
+    // link https://stackoverflow.com/questions/34292255/short-circuit-with-a-return-statement
+    // link https://www.w3schools.com/jsref/met_element_remove.asp
     if (!element.closest("main")) return element.remove();
 
     // Element i main-elementet må vere der for å halde ved strukturen
