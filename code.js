@@ -39,7 +39,7 @@ function flyttElementTilfeldig(e, element) {
     element.removeAttribute("id");
 }
 
-function vurderAvstand(e, element = jaKnapp, maalDiff = 150) {
+function vurderAvstand(e, element = jaKnapp, maalDiff = 150, reaksjonsFunksjon = flyttElementTilfeldig) {
 
     // Finn posisjonen til musepeikaren
     // link https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
@@ -59,15 +59,46 @@ function vurderAvstand(e, element = jaKnapp, maalDiff = 150) {
         : elementPos.y;
     
     
-        // Brukar Pythagoras for å finne avstand mellom musepeikar og element
+    // Brukar Pythagoras for å finne avstand mellom musepeikar og element
     const diff = Math.sqrt((musX - elementXRef) ** 2 + (musY - elementYRef) ** 2);
-    if (diff < maalDiff) {
-        flyttElementTilfeldig(e, element);
+    if (diff < maalDiff && reaksjonsFunksjon) {
+        reaksjonsFunksjon(e, element);
     }
+
+    return diff;
+}
+
+function sorterDist(e, ...elementArr) {
+    
+    // Lagar array med avstand frå musepeikar til kvart element i elementArr
+    distArr = elementArr.map(element => {
+        return {
+            element: element,
+            dist: vurderAvstand(e, element, reaksjonsFunksjon = null)
+        }
+    });
+
+    // Sorterer distArr
+    distArr.sort((a, b) => a.dist - b.dist);
+
+    // Returnerer minste i distArr
+    return distArr;
 }
 
 
 
 // category event listeners
 
-document.body.addEventListener("mousemove", vurderAvstand);
+// document.body.addEventListener("mousemove", vurderAvstand);
+document.body.addEventListener("mousemove", e => {
+    const [nyNeiKnapp, nyJaKnapp] = sorterDist(e, jaKnapp, neiKnapp);
+
+    nyNeiKnapp.element.innerHTML = "Nei";
+    nyJaKnapp.element.innerHTML = "Ja!";
+});
+
+// Ordnar med fokus via tastatur
+jaKnapp.addEventListener("focus", e => jaKnapp.innerHTML = "Nei");
+jaKnapp.addEventListener("focusout", e => jaKnapp.innerHTML = "Ja!");
+neiKnapp.addEventListener("focus", e => neiKnapp.innerHTML = "Nei");
+neiKnapp.addEventListener("focusout", e => neiKnapp.innerHTML = "Ja!");
