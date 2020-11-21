@@ -1,12 +1,24 @@
+// category mixins
+    
+@mixin midtstill($juster-display: false, $hoyde-margin: 0)
+    margin: $hoyde-margin auto
+    @if $juster-display
+        display: inline-block 
+
+
+
+// category stil
+
 body
     margin: 0
     position: relative
     font-family: Arial, Helvetica, sans-serif
 
 main
-    padding-top: 10em
-    width: 100vw
-    height: 100vh
+    @include midtstill    
+    padding-top: 5em
+    width: 90vw
+    height: 90vh
     display: flex
     flex-flow: row wrap
     justify-content: space-evenly
